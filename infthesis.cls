@@ -163,6 +163,7 @@ Computer Science}}
     \setboolean{strict}{false}}
 \DeclareOption{msc}{\@taughtdegree{Master of Science}{\@mscdegree}}
 \DeclareOption{bsc}{\@taughtdegree{\@project}{\@course}}
+\DeclareOption{beng}{\@taughtdegree{\@project}{\@course}}
 
 %% Chapter header alignment, font of headings
 \DeclareOption{centerchapter,centrechapter}
