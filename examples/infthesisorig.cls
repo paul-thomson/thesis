@@ -48,9 +48,8 @@
 \usepackage[paper=a4paper]{geometry}
 \RequirePackage{ifthen,%  
     graphics,%
-    xspace
-    %eushield
-    }
+    xspace,
+    eushield}
 
 
 %%%% The following packages are also used but are included further on rather
@@ -90,7 +89,7 @@
 \newboolean{timesfonts}
 
 %% Choose the monochrome crest for the front page (if crests used)
-%\shieldtype{0}
+\shieldtype{0}
 
 %%
 %%  --- Options ---
