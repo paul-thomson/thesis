@@ -1,4 +1,4 @@
-pdflatex report.tex
-bibtex report.tex
-pdflatex report.tex
-pdflatex report.tex
+pdflatex report
+bibtex report
+pdflatex report
+pdflatex report
