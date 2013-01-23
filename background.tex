@@ -1,9 +1,10 @@
 \chapter{Background}
 \label{background}
 \section{Infandango}
-Infandango is an automated web-based marking system for student submitted programming exercises. A student can view the list of warm-up, optional and core exercises and choose to submit a file for one of them. This file is then compiled and tested in a sandbox by Jester. Between the web frontend and Jester there is a PostgresSQL database which stores which files have been submitted for which users and how these files performed on the JUnit tests.
+Infandango is an automated web-based marking system for student submitted programming exercises. A student can view the list of warm-up, optional and core exercises and choose to submit a file for one of them. This file is then compiled and tested by Jester in a sandbox. Between the web frontend and Jester there is a PostgresSQL database which stores which files have been submitted for which users and how these files performed on the JUnit tests.
 \subsection{Current feedback}
-The current feedback provided is quite limited. Figure \ref{fig:currentfeedback} shows some of the feedback a user currently receives. The user can also receive more in depth feedback about each submission, specifically the JUnit tests which are used to determine the mark. There is also a view which summarises the score for each week, allowing the user to judge their overall progress made.
+The primary source of feedback in Infandango is displayed in Figure \ref{fig:currentfeedback}. Each submissions is marked with a set of JUnit tests and the fraction of these tests which are correct is displayed. This fraction is converted into a percentage and displyed on a green or red background depending on the value. %EPLXAINT HTIS LOL
+More general feedback is also available which displays similar information but the results are displayed by week rather than by question. 
 
 \begin{figure}[p]
 \centering
