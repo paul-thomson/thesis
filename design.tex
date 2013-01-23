@@ -36,6 +36,16 @@ In order to decide which learning method to use sci-kit learn's cross validation
 
 %\subsubsection{Calibration}
 
-\subsection{Visualising the results}
+\section{What next?}
+In the next few weeks the system will be completed so that is fully functional for user testing.
 
-\section{Integration with Infandango}
+\subsection{Integrating with Infandango}
+To integrate with Infandango the model must be given the recent scores in order to update their predicted score and this must be used by the frontend to be displayed in some way.
+
+\subsubsection{Database}
+The functionality has already been written which queries the database for the most recent questions. It would be possible to do this without querying the database (store each new question in some temporary place) but for the limited amount of testing being performed any possible speed decrease (database queries can be slow) can be ignored. What is left is to put the code in the relevant place within the system.
+
+\subsubsection{Frontend}
+This is the area which will require the most work. The first step is to decide on the preferred design: how the predicted score will be displayed. When a number of designs have been drafted a group of students who used the system last year will be asked for which design they prefer. These designs are likely to be very visually, with little or no numbers. This is with the aim to abstract away from the marks being received and instead give the user an idea of how well they are performing: should they be working harder or are at a good stage right now?
+\\
+When a design is decided the placement of the widget will need to be decided. It is likely to be placed on the side bar which contains the list of weeks and questions.
