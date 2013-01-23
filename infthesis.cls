@@ -47,7 +47,7 @@
 %% - xspace if abbreviations are used
 \usepackage[paper=a4paper]{geometry}
 \RequirePackage{ifthen,%  
-    graphics,%
+    graphicx,%
     xspace
     %eushield
     }
