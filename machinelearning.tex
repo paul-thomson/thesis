@@ -26,15 +26,43 @@ The package being used for the majority of the machine learning is scikit-learn 
 \item Ridge Regression
 \item Lasso
 \item Elastic Net
-
+\end{itemize}
 An interesting non-linear model which is missing from this list is Neural Networks. SKL does not have the capability of creating and training a Neural Network but a python library that specialises in Neural Networks is pybrain. Although using a Neural Network required learning and using another library it is useful to have multiple non-linear models.
 
-% MROE STUFF ABOUT THE TYPE OF NEURAL NETWORK
+% MORE STUFF ABOUT THE TYPE OF NEURAL NETWORK
 
 \subsection{Training the models}
 The baseline to test against is quite simple: the average of all the features. Although simple this model has given better results than some of the machine learning models.
 \\
 To compare the models a python script was created which split the data into a training and test set. The models are trained on the training data and the mean square error is calculated using the testing data. However, since the value for \textit{\textbf{N}} is not fixed this test is performed for values of \textit{\textbf{N}} ranging from 2 to 9. The errors can then be plotted against \textit{\textbf{N}} to show how the accuracy changes with the number of features but also how each model performs against the others.
+\\
+The problem with testing like this is the results can vary quite a bit by chance since the amount of data is not particularly large. To remove some of this variance k-fold cross validation is performed. In k-fold cross validation the original data set is split into k subsets, each of roughly equivalent size. The procedure above is performed with k-1 sets as training data and 1 set as testing data. This is performed k times, each time alternating which set is used as the testing set so that by the end each set has been used as the testing set. This provides more robust results which are less prone to variance.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=1\textwidth]{kfoldall.png}
+\caption{Comparison of different machine learning methods comparing their accuracy against the number of previous exercises considered}
+\label{fig:kfoldall}
+\end{figure}
+
+Figure \ref{fig:kfoldall} appears to tell us that LIR (Linear Regression) performs the best. However, it also seems that RR (Ridge Regression), ELNET (Elastic Net) and Lasso are missing from the graph. However, if the graph is magnified on the Linear Regression line we get Figure \ref{fig:zoomed}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=1\textwidth]{linearmodels.png}
+\caption{Similarity of the linear models}
+\label{fig:zoomed}
+\end{figure}
+
+This graph shows that the linear models all perform very similarly with their maximum variance being displayed in Figure \ref{fig:zoomed} as roughly 0.06. Although not visible in the previous figure, it can be seen in Figure \ref{fig:whereisrr} that Ridge Regression follows Linear Regression very closely.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=1\textwidth]{whereisrr.png}
+\caption{Ridge regression follows extremely closely to linear regression}
+\label{fig:whereisrr}
+\end{figure}
+
 
 \section{Final model}
 
