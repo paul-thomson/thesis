@@ -1,10 +1,12 @@
 \chapter{Design}
 \label{design}
-With promising results for machine learning based visual feedback a similar design could be made for Infandango.
+The literature has shown us that machine learning methods can be useful in generating feedback for students, and this can be combined with a visual display for intuitive understanding. The first design decisions to be made is the language and libraries to be used when writing the program.
 \section{Language and Tools}
-Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. I had most experience with Java, and some parts of Infandango were already written in Java. Most of Infandango was, however, written Python and I had some experience with it as well. After researching appropriate languages for machine learning R\cite{r_site} become a third possible choice. Follow research on all languages Python seemed most appropriate: integrating with Infandango would be straightforward and scikit-learn\cite{scikit_site} would remove the challenge of implementing machine learning methods.
+Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. Java because I had the most experience with Java, and some parts of Infandango were written in Java. Most of Infandango was, however, written in Python with I had also had some experience. Due to the emphasis the project has on machine learning, R\cite{r_site} was another approriate language. 
+The final decision was to use Python with scikit-learn\cite{scikit_site} and pybrain\cite{pybrain_site} libraries: this provides the simplest integration with Infandango (since the parts with which this will need to be integrated are written in Python) and the libraries provide a variety of machine learning methods.
+
 \section{Proposed Design}
-Using anonymised data from previous years a model can be built using machine learning methods to provide feedback. Using this model and some recent scores from the user, the following score can be predicted. 
+A model is created using an approriate machine learning method. The method will be applied to data which has been stored and anonymised from a previous year in which the course was run. 
 \subsection{Model}
 The Khan Academy model is built based on one assumption: a user can always \emph{generate another example} and it will be of the \emph{same type}. These are two qualities which Infandango does not share. Infandango has a preset number of manually written exercises and they are not grouped \emph{strictly} by similarity. The first proposed model was to take the average for each week and use those averages as features for the model and the next week's average as the class. There are however some problems with this model:
 
