@@ -20,12 +20,12 @@
 
 ## Choosing a model ##
 * Feature selection
-	-do we retain question identity? Yes and no
+	- do we retain question identity? Yes and no
 * Preliminary models
-	-Classifiers
-	-Regression
+	- Classifiers		}
+	- Regression		} For both of these explain the libraries and model details
 * Training and optimising
-	-K-fold cross validation
+	- K-fold cross validation
 * Results
 * Conclusion
 
