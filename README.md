@@ -4,7 +4,7 @@
 * Briefly explain the general structure of the report, discuss the final outcomes
 
 ## Background ##
-* Infandango and current feedback. **Also talk about the course and gathered data**
+* Infandango and current feedback. Also talk about the course and gathered data
 * **Machine learning to solve problems**
 * **Literature**
 	- Khan blog
@@ -14,7 +14,7 @@
 ## Design ##
 * Language and tools
 * **Proposed Design**
-	- **Machine learning model**
+	- Machine learning model
 	- **Visualisation**
 * **How it will integrate with Infandango**
 

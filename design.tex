@@ -1,43 +1,68 @@
 \chapter{Design}
 \label{design}
-The literature has shown us that machine learning methods can be useful in generating feedback for students, and this can be combined with a visual display for intuitive understanding. The first design decisions to be made is the language and libraries to be used when writing the program.
+The literature has shown us that machine learning methods can be useful in generating feedback for students, and this can be combined with a visual display for intuitive understanding. The first design decision to be made is the language and libraries to be used when writing the program.
 \section{Language and Tools}
-Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. Java because I had the most experience with Java, and some parts of Infandango were written in Java. Most of Infandango was, however, written in Python with I had also had some experience. Due to the emphasis the project has on machine learning, R\cite{r_site} was another approriate language. 
+Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. Java because I had the most experience with it and some parts of Infandango are written in Java. Most of Infandango was, however, written in Python with which I also had experience. Due to the emphasis the project has on machine learning, R\cite{r_site} was another approriate language. 
 The final decision was to use Python with scikit-learn\cite{scikit_site} and pybrain\cite{pybrain_site} libraries: this provides the simplest integration with Infandango (since the parts with which this will need to be integrated are written in Python) and the libraries provide a variety of machine learning methods.
 
 \section{Proposed Design}
-A model is created using an approriate machine learning method. The method will be applied to data which has been stored and anonymised from a previous year in which the course was run. 
+Using the data from a previous year a model will be trained using machine learning methods. The model output a value which will be displayed somewhere in the Infandango system.
 \subsection{Model}
-The Khan Academy model is built based on one assumption: a user can always \emph{generate another example} and it will be of the \emph{same type}. These are two qualities which Infandango does not share. Infandango has a preset number of manually written exercises and they are not grouped \emph{strictly} by similarity. The first proposed model was to take the average for each week and use those averages as features for the model and the next week's average as the class. There are however some problems with this model:
+The Infandango system is similar to the Khan Academy system and so the method Khan Academy uses is an approriate starting point. Infandango allows a user to submit many solutions for an exercise, and so does Khan Academy. However, there are two properties that distinguish Khan Academy from Infandango:
 
 \begin{itemize}
-\item The semester has 8 weeks worth of exercises. If all 7 weeks are used as a feature and the score for week 8 is predicted then the user would not receive any feedback until the last week. If feedback is to be generated for each week then a separate model needs to be trained for each week: one model where there is only 1 week of evidence and week 2 is predicted, another where there are 2 weeks of evidence and week 3 is predicted and so on. Neither of these options are desirable.
-\item Even after 3-5 weeks there would only just be enough data to start getting reasonable results CITE HERE % CITE HERE graph, even though it is for later model
-\item Grouping data like this means we have a lot less training examples
+\item For each exercise, the next solution submitted is for the same kind of question but the details are randomly generated %MAY NEED TO EXPLAIN THIS
+\item A solution is a binary feature: correct or incorrect
 \end{itemize}
 
-A similar alternative to this model is to treat each question within a week separately, giving the model a much larger dimensionality. Although this does remove the latter two problems, the first problem still remains. This also raises the likelihood of data being missing for a feature (it is more common for a student to miss one exercise within a week than the whole week).
-\\
-Both of these models have been working with the assumption that we want to learn something about \emph{specific} questions. So if, for example, a question was particularly hard then the model might be able to learn that it should predict lower scores for that question. However, we have seen the difficulties that these models incur. For this reason a much simpler model was created. The model has \textit{\textbf{N}} features, each a percentage. Each feature represents a score from the corresponding previous question. The class is the score for the \textit{\textbf{N+1}} problem, so when a user is using the system it will try to predict their next score given their previous \textit{\textbf{N}} scores. This creates a moving window of previous scores, with each feature simply being \emph{a question} rather than, for example \emph{week 3, question 2b}.
+This means a user can keep submitting solutions to an exercise even after they get one solution correct. However, in Infandango once a user gets 100\% there is no reason for the user to submit another solution because they have already perfected that exercise. The second difference means our data will be numerical instead of binary and this needs to be considered when designing the model.
+The first difference is significant, and requires a change in granularity of the data: instead of measuring progress on a submission-by-submission basis, the focus should be on the final mark a user will achieve for an exercise. So instead of trying to predict the score for the next {\it submission}, try to predict the final score for the next {\it question}.
 
-\subsubsection{Unexplored Alternatives}
-There are many unexplored possibilities for other features like a weighted moving average or the number of problems unfinished. With this project it was important to complete the system quickly so that user tests can be done over a period of weeks. Other possibilities for features and other learning methods can be explored in later projects.
+With an idea of how the model was going to work, some exploratory work was done on the data. Although users are encouraged to answer all questions, the do not receive marks directly for each question. This makes missing data a potential problem. Figure \ref{fig:missing_data} shows the submission rates for all the questions. It shows that submission rates can get as low as around 10\% for some questions. Figure \ref{fig:missing_data_core} shows the submission rates for only core questions. The submission rates are on average higher than for non-core questions. Combined with the fact that users are likely to have more motivation for core questions (since they potentially count towards their final mark) data from now on will only be considering core questions.
 
-\subsubsection{Training the model}
-Django is used to retrieve the training data from the anonymised data from a previous year. This data is filtered into groups of \textit{\textbf{N+1}} consecutive results, with the final result being the class. For each set of \textit{\textbf{K}} results \textit{\textbf{K-N}} sets of results are created. This provides the machine learning methods with a lot more training data than alternative models.
-\\%CAN ADD MORE HERE ABOUT TESTING OTHER RATIOS 
-%can also talk about r2 scores
-In order to decide which learning method to use sci-kit learn's cross validation method splits the data into training and testing sets, with a testing size of 20\%. Different machine learning methods were then trained on this data and tested by comparing their R2 scores. In Figure \ref{fig:comparison} it can also be seen that these tests are done multiple times over different values of \textit{\textbf{N}}. The highest accuracy is obtained by Logistic Regression at \textit{\textbf{N}} = 4. Logistic Regression is also the most consitent of the methods, thus making it the most appropriate choice.
-
-\begin{figure}[p]
+\begin{figure}[b!]
 \centering
-\includegraphics[width=1\textwidth]{comparison.png}
-\caption{Comparison of different machine learning methods comparing their accuracy against the number of previous exercises considered}
-\label{fig:comparison}
+\includegraphics[width=0.8\textwidth]{missing_data.png}
+\caption{Submission rates for all questions}
+\label{fig:missing_data}
 \end{figure}
 
-%\subsubsection{Calibration}
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.8\textwidth]{missing_data_core.png}
+\caption{Submission rates for only core questions}
+\label{fig:missing_data_core}
+\end{figure}
 
-\subsection{Visualising the results}
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.8\textwidth]{missing_data_week_any.png}
+\caption{Submission rates for at least one question per week}
+\label{fig:missing_data_week_any}
+\end{figure}
+
+With the amount of missing data still being significant changing to yet another level of granularity was considered: predicting on a week-by-week basis. Using this method there could be a lot less missing data: take the average of all the questions for a week to get the score for that week. This means there will still be a data point for a student if they miss one question, and they would have to have no solutions for all questions in a week to get no score for a week. Comparing Figure \ref{fig:missing_data_week_any} to Figure \ref{fig:missing_data_core} a rise in the amount of data points can be seen. On average there is about 115 data points for a given week, and about 100 data points for a given question.
+
+Although this does provide slightly higher yield there are disadvantages to predicting on a week-by-week basis:
+
+\begin{enumerate}
+\item It would take a week before there was even one data point to start giving feedback from
+\item Feedback would only be updated weekly. After a student has been working on questions for a few days the feedback is likely to be outdated
+\item A separate model would need to be trained for each week. To predict the score for week 3 you want to use two features: the score for weeks 1 and 2. For week 8 you would like to use all the available features: weeks 1 to 7. Having a variable number of features means having different models for each week
+\end{enumerate}
+
+Problems 1 and 2 are not really present if prediction is done question-by-question. Problem 3, however is still present: a new model needs to be trained for each question. A solution to this problem will be discussed later.
+
+\subsubsection{Identity based features}
+Starting with the Khan Academy model and adapting it based on Infandango and the available data a model can be proposed for Infandango: For each question, train a new model which takes all previous questions as input features. The model then tries to predict the score for that question.
+
+\subsubsection{Moving Window}
+Previously an assumption has been made: the identity of the question is necessary. While the identity of the question is likely to be important it is not necessary and removing this constraint allows a simple, singular alternative model to be proposed: The model always has N features and tries to predict the score of the N+1 question. For the simplicity of the following description N = 5 will be assumed.
+There are 5 input features. The features will be decided based on their locality to the output feature: if we want to make a prediction for question 6 then the input features will be questions 1, 2, 3, 4 and 5. All the input features occur before question 6 because when a student is completing questions they are much more likely to do them in order, and so questions 7, 8 and 9 are not likely to present when making predictions. 
+Although this approach does remove the significant information of the identity of the questions it is simple to implement and it also provides a lot more training data: There are 30 questions, and so using this approach for each student there would be 25 potential training examples. However, using the previous model there would only be 1 item for each model.
+
+
+
+\subsection{Visualisation}
 
 \section{Integration with Infandango}
