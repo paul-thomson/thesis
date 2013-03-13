@@ -9,6 +9,7 @@
 * **Literature**
 	- Khan blog
 	- Programming assessment
+	- **Edward Tufte summary **
 	- **some machine learning paper about optimisation**
 
 ## Design ##
