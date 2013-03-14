@@ -9,7 +9,7 @@ More general feedback is also available which displays similar information but t
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=0.8\textwidth]{currentfeedback.png}
+\includegraphics[width=0.8\textwidth]{images/currentfeedback.png}
 \caption{This is a crop of what will be displayed to the user for a given week}
 \label{fig:currentfeedback}
 \end{figure}
@@ -32,17 +32,18 @@ Although the current system does not require perfection like Khan Academy did, i
 \subsection{Programming Assessment}
 In {\it Automated Evaluation of Programming Assignments}\cite{automate_evaluation}, Kaushal and Singh describe various measures used as part of an automated marking system: regularity, efficiency, integrity and accuracy. Notably, Infandango only gives feedback on one of these areas, accuracy. The paper tracks the change in these measures as students use the system and find that there is a general improvement on all categories when feedback is based on these measurements. This shows that accuracy is not the only measurement that should be used to provide feedback and these are possibilities to be considered for Infandango.
 \subsection{Visualisation}
-In his book {\it Visual Display of Quantitative Information}\cite{tufte_book}, Edward Tufte discusses methods of efficiently and suitably displaying information. In chapter 4 Data-Ink and Graphical Redesign, Tufte introduces the idea of Data-Ink: The amount of "ink" which is actually used to represent the data you are interested in. In Tufte's words:
+In his book {\it Visual Display of Quantitative Information}\cite{visual_explanations}, Edward Tufte discusses methods of efficiently and suitably displaying information. In chapter 4 Data-Ink and Graphical Redesign, Tufte introduces the idea of Data-Ink: The amount of "ink" which is actually used to represent the data you are interested in. In Tufte's words:
 
-\quote{Data-ink is the non-erasable core of a graphic, the non-redundant ink arranged in reponse to the variation in the numbers represented.}
-
+\begin{quote}Data-ink is the non-erasable core of a graphic, the non-redundant ink arranged in reponse to the variation in the numbers represented.
+\end{quote}
 Given that data-ink is unavoidable and desirable information, designers should strive towards a high data-ink ratio, removing as much non-information ink as possible to avoid overwhelming the data. Tufte then continues by giving examples where redundant information is desirable, explaining that it should not always be removed.
 
-\verse{Above all else show the data.
+\begin{verse}Above all else show the data.
 	Maximize the data-ink ratio.
 	Erase non-data-ink.
 	Erase redundant data-ink.
-Revise and edit.}
+Revise and edit.
+\end{verse}
 
 These principles shall be considered when designing the visualisation of the feedback score.
 
