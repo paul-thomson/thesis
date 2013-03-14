@@ -17,7 +17,7 @@
 * **Proposed Design**
 	- Machine learning model
 	- **Visualisation**
-* **How it will integrate with Infandango**
+* How it will integrate with Infandango
 
 ## Choosing a model ##
 * **Feature selection**
