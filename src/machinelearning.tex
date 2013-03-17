@@ -18,12 +18,34 @@ Classifiers attempt to identify the class a student should be assigned to depend
 
 A natural discretisation is already present in the current design: the visualisation on the webpage. The visualisation uses 9 blocks to display the score. For the sake of this application, further accuracy would be lost when the information is displayed. So, in order to use classifiers on this problem, the output feature (the question we want to predict) will be discretised into one of 9 classes, distributed evenly over the range 0-100%.
 
-%libraries and model details
-
 \subsection{Regression}
 Unlike the classifiers, no adaptations need to be made to the data before supplying it to the regression models.
 
-%libraries and model details
+\subsection{Model definitions}
+
+\paragraph{Logistic Regression}
+Although the name is misleading, this model is a classifier. It is originially a binary classifier but this problem has been formulated to use 9 classes. The multivariate implementation used by sci-kit uses the one-vs-all method. It can also use either L1 or L2 regularisation.
+
+\subsubsection{Linear Models}
+The following models are all linear regressions: they expect the target value to be a linear combination of the input features. The differences between them occur in the constraints applied to the coefficients.
+
+\paragraph{Linear Regression}
+This is the simplest linear model. It uses Ordinary Least Squares to estimate the coefficients of the input vector. This means it tries to minimise the residual sum of squares between the result given by the labelled data and the result predicted by the model.
+
+\paragraph{Ridge Regression}
+This model adapts Linear Regression by adding to the minimisation value a penalty depending on the size of the coefficients. Sci-kit allows control of this penalty through the \alpha parameter.
+
+\paragraph{LASSO}
+This model applies a similar penalty as Ridge Regression except use the L1 norm instead. Sci-kit allows control of this penalty through the \alpha parameter.
+
+\paragraph{Elastic Net}
+Elastic Net combines the penalties of Ridge Regression and LASSO to provide a tradeoff between the two functionalities. This tradeoff can be controlled through the l1\_ratio parameter.
+
+\paragraph{Cross-validation}
+Sci-kit also provides versions of these models which automatically apply cross-valdiation to determine the best values for their resepctive parameters.
+
+\subsubsection{Support Vector Machines}
+A support vector machine, at the simplest level, takes some input and assigns it to a binary class. At first this seems as linear as the previous models, but performing the kernel trick allows the SVM to deal with non-linear data. The choice of kernel can significantly affect the performance of the model.
 
 \section{Training and optimising}
 
