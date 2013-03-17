@@ -45,9 +45,20 @@ Elastic Net combines the penalties of Ridge Regression and LASSO to provide a tr
 Sci-kit also provides versions of these models which automatically apply cross-valdiation to determine the best values for their resepctive parameters.
 
 \subsubsection{Support Vector Machines}
-A support vector machine, at the simplest level, takes some input and assigns it to a binary class. At first this seems as linear as the previous models, but performing the kernel trick allows the SVM to deal with non-linear data. The choice of kernel can significantly affect the performance of the model.
+A support vector machine, at the simplest level, takes some input and assigns it to a binary class. At first this seems as linear as the previous models, but performing the kernel trick allows the SVM to deal with non-linear data. The choice of kernel can significantly affect the performance of the model. Two SVM implementations have been considered for this problem.
+
+\paragraph{Support Vector Classifier}
+Sci-kit provides more than one Support Vector Classifier but SVC has been chosen due to its support of non-linear kernels. SVC uses the one-against-one approach for multiclass problems.
+
+\paragraph{Support Vector Regression}
+SVR is scit-kit's implementation of Support Vector Regression. It also supports non-linear kernels.
+
+\subsubsection{Artificial Neural Network}
+This model was chosen because it can model very complex relationships, which many of the previous models cannot. Like all models, it takes the input vector and produces an output. It does this by passing the input through a series of hidden layers. These hidden layers are created and calibrated during the training process. The library pybrain had to be used for this because sci-kit provides no implementation of an Artificial Neural Network.
+Pybrain provides a wide variety of options, too many to be considered in this one implementation. Here are some of the options pybrain provides: Back propagation trainer, choice of hidden layer, choice of number of hidden layers.
 
 \section{Training and optimising}
+Determining the best training methods and model parameters are tasks which can always be improved. Given the timescale of the project and that need to also integrate the model with the system, there are some model parameters and optimisation methods which have not been thoroughly investigated.
 
 \subsection{K-fold cross validation}
 
