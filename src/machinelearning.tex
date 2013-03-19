@@ -5,7 +5,7 @@ Now that cross-validation has been performed each model has an error estimate. T
 Although it cannot be certain that this model will perform best on new data, it is at least hoped that it will perform similarly to the final error estimate.
 
 \section{Feature selection}
-The first action to be taken when creating a model is to determine the features. The features determine the inputs to the model; the data which the model can use to learn and predict. 
+The first action to be taken when creating a model is to determine the features. The features determine the inputs to the model; the data which the model can use to learn and predict. Although the content of the inputs has been mostly decided already - the submission score - there is one aspect which has not been decided: how many scores should be considered? The moving window model must decide how large the window should be and the identity based model should consider the performance across the different model instantiations. The number of input features is a factor which will be discussed in the results section.
 
 \subsection{Question Identity}
 The two data representations differ on essentially one issue: is the question identity retained by the input features? One model says yes: retain the identities of the questions by assigning an index of the input vector to the same question each time (which means a new model must be created for each question). The second approach says no: create a moving window of input features from the questions immediately before the question we want to predict. This approach is quite wasteful: If the model is predicting the score for question 20 then it takes the results from questions 14 - 19 and ignores the other 13 questions. The model cannot take all the scores individually or it would be identical to the previous model, so a crude method of using all that extra data is to add an extra feature which is the numerical average of the unused data.
@@ -61,8 +61,12 @@ Pybrain provides a wide variety of options, too many to be considered in this on
 Determining the best training methods and model parameters are tasks which can always be improved. Given the timescale of the project and that need to also integrate the model with the system, there are some model parameters and optimisation methods which have not been thoroughly investigated.
 
 \subsection{K-fold cross validation}
-
+%maybe discuss/reference a paper on cross-validation? this has already been discussed at beginning, maybe bring that part down here?
 \section{Results}
+Standard measurements of error (e.g. mean squared error) are dependent on whether the model is a classifier or a regressor: the mean squared error does not really make sense to a classifier, because it predicts a class, not a number. Similarly, using the frequency of an incorrect answer for a regressor does not make sense: it is highly unlikely to predict the exact continuous value. Therefore to allow comparison of the two types of models the output of the regressor is binned according to the available classes: this way turns a continuous value into a prediction of a class and allows the use of percentage as a comparable measure.
+
+\subsection{Linear Classifiers}
+Due to the similarity of the Linear Regression based classifiers, these will be considered together and a representative model will be chosen based on the performance. As mentioned at the beginning of this chapter, both data representations have a variable number of input features and so accuracy will be discussed with respect to the number of input features.
 
 \section{Conclusion}
 
