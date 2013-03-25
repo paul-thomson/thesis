@@ -102,11 +102,6 @@ None of the parameters have a drastic effect on the error rate of the models. Th
 \subsubsection{Comparing the Linear Models}
 Using the cross-validation method described previously, the 4 different linear models were trained with the parameters discovered via optimisation.
 
-
-
-
-
-
 \begin{figure}[b!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/linearmodelsmovingwindow.png}
@@ -154,6 +149,24 @@ Elastic Net & 43.1508290455 & 44.1091954023 \\ \hline
 \end{figure}
 
 The lowest average is shared by Linear Regression, Ridge Regression and Elastic Net. Since Ridge Regression and Elastic Net are Linear Regression with added regularisation, the simpler option will be chosen. Therefore the best Linear model is Linear Regression using the Moving Window approach.
+
+\subsection{Support Vector Machines}
+A Support Vector Machine is an algorithm that attempts to find a maximum margin hyperplane which is defined by the support vectors: the vectors which lie the distance (margin) away from the hyperplane. This margin is maximised so that the hyperplane lies as far away from each class as possible. A new data point is labelled depending on what side of the hyperplane it lies on. Figure \ref{fig:hyperplane} shows an example hyperplane on two dimensional data, although SVM can work on any number of dimensions.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/hyperplane.png}
+\caption{A maximum margin hyperplane that separates two classes in a two dimensional space}
+\label{fig:hyperplane}
+\end{figure}
+
+\subsubsection{Kernel Functions}
+The simplest, linear Support Vector Machines attempt to find a maximum margin hyperplane using an equation which requires using the dot product between vectors. In the linear case the standard dot product is enough to allow the data to be separated. However, if the data is more complex it may not be the approriate function to use. Changing this dot product to be some other function (which must take two vectors and return a scalar value) is what is known as the "kernel trick". The candidate functions are known as kernel functions, and allow for the SVMs to be applied to non-linear data. 
+
+\subsubsection{Optimisation}
+Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, "degree", allows the specification of the degree of the kernel. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}.
+
+
 
 \section{Conclusion}
 
