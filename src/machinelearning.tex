@@ -133,7 +133,9 @@ One factor which might account for both the increase in the error rate and the e
 As seen in figure \ref{fig:movingwindowdata} the moving window approach can, for one model, train multiple times on the same piece of data. The reason it can do this is that it does not need to consider the identity of the question. However, this is exactly what the identity based approach does. For this reason it can only train once on each piece of data, whereas the moving window approach might receive 20 pieces of data from one observed item.
 
 \subsubsection{Conclusion of Linear Models}
-One interesting feature of the results so far is that all the linear models behave very similarly on both data representations. Since the graphs do not give any obvious indications of the best model, the averages have been calculated for each model for each data representation.
+One interesting feature of the results so far is that all the linear models behave very similarly on both data representations. Since the graphs do not give any obvious indications of the best model, the averages have been calculated for each model for each data representation, shown in Table \ref{table:lienarmodelsaverages}.
+
+The lowest average is shared by Linear Regression, Ridge Regression and Elastic Net. Since Ridge Regression and Elastic Net are Linear Regression with added regularisation, the simpler option will be chosen. Therefore the best Linear model is Linear Regression using the Moving Window approach.
 
 \begin{figure}[h!]
 \centering
@@ -147,8 +149,6 @@ Elastic Net & 43.1508290455 & 44.1091954023 \\ \hline
 \caption{Average error rate for the linear models on two different data representations}
 \label{table:linearmodelsaverages}
 \end{figure}
-
-The lowest average is shared by Linear Regression, Ridge Regression and Elastic Net. Since Ridge Regression and Elastic Net are Linear Regression with added regularisation, the simpler option will be chosen. Therefore the best Linear model is Linear Regression using the Moving Window approach.
 
 \subsection{Support Vector Machines}
 A Support Vector Machine is an algorithm that attempts to find a maximum margin hyperplane which is defined by the support vectors: the vectors which lie the distance (margin) away from the hyperplane. This margin is maximised so that the hyperplane lies as far away from each class as possible. A new data point is labelled depending on what side of the hyperplane it lies on. Figure \ref{fig:hyperplane} shows an example hyperplane on two dimensional data, although SVM can work on any number of dimensions.
@@ -166,7 +166,90 @@ The simplest, linear Support Vector Machines attempt to find a maximum margin hy
 \subsubsection{Optimisation}
 Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, "degree", allows the specification of the degree of the kernel. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}. 
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svcpoly.png}
+\caption{The performance of a SVM classifier using a polynomial kernel with different degree values}
+\label{fig:svcpoly}
+\end{figure}
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svcsigmoid.png}
+\caption{The performance of a SVM classifier using a sigmod kernel with different degree values}
+\label{fig:svcsigmoid}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svrpoly.png}
+\caption{The performance of a SVM regression using a polynomial kernel with different degree values}
+\label{fig:svrpoly}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svrsigmoid.png}
+\caption{The performance of a SVM regression using a sigmoid kernel with different degree values}
+\label{fig:svrsigmoid}
+\end{figure}
+
+Figures \ref{fig:svcsigmoid} and \ref{fig:svrsigmoid} show the effect of changing the degree of the sigmoid kernel. In both cases, changing the degree has no effect on the performance of the model. Figures \ref{fig:svcpoly} and \ref{fig:svrpoly show the effect of changing the degree of a polynomial kernel. Here, changing the degree has a significant affect. In both cases the best value is 1, with the other values performing significantly worse.
+
+\subsubsection{Results}
+With the optimisations completed, the different models could be compared against each other. Figure \ref{fig:svmsmovingwindow} and Table \ref{table:svmsmovingwindowaverages} show the results for the moving window approach. Figure \ref{fig:svmsidentified} and Table \ref{table:svsmidentityaverages} do the same for the identity based approach. 
+The moving window approach has three similar, high performing models: SVC Linear, SVC Poly, SVC RBF. These models show a very similar performance in the identity based approach, although as with all models their performance is more erratic.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svmsmovingwindow.png}
+\caption{The performance of various SVM models}
+\label{fig:svmsmovingwindow}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{tabular}{l || l }
+Models & Average Error \\ \hline \hline
+SVC Linear & 20.3041791411 \\ \hline
+SVC Poly & 20.3313952482 \\ \hline
+SVC RBF & 20.5499438422 \\ \hline
+SVC Sigmoid & 45.4603396387 \\ \hline
+SVR Sigmoid & 45.9489389873 \\ \hline
+SVR RBF & 52.2508272032 \\ \hline
+SVR Poly & 56.6047985482 \\ \hline
+SVR Linear & 84.1041319495 \\ \hline
+
+\end{tabular}
+\caption{Average error rate for SVMs using the moving window approach}
+\label{table:svmsmovingwindowaverages}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/svmsidentified.png}
+\caption{The performance of various SVM models}
+\label{fig:svmsidentified}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{tabular}{l || l }
+Models & Average Error \\ \hline \hline
+SVC Linear & 20.5459770115 \\ \hline
+SVC Poly & 17.8424329502 \\ \hline
+SVC RBF & 22.3659003831 \\ \hline
+SVR Poly & 35.5555555556 \\ \hline
+SVC Sigmoid & 40.6082375479 \\ \hline
+SVR Linear & 46.1206896552 \\ \hline
+SVR Sigmoid & 49.8970306513 \\ \hline
+SVR RBF & 53.43151341 \\ \hline
+
+\end{tabular}
+\caption{Average error rate for SVMs using the moving identity based approach}
+\label{table:svmsidentityaverages}
+\end{figure}
 
 \section{Conclusion}
-
+3 models perform very similarly on both approaches which makes choosing between them more difficult, although it is at least clear that it should be a classifier. Due to having the lowest combined average, the model chosen as the best SVM is classification with a polynomial kernel of degree 1.
