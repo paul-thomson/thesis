@@ -31,9 +31,10 @@
 * **Conclusion**
 
 ## Implementation ##
-* **Probably nothing on ML, that should mostly be covered**
+* **Overview**
 * **CSS Design**
-* **How it fits with Infandango**
+* **Prediction Model**
+* **System Integration**
 * **Improvements**
 
 ## Conclusion ##

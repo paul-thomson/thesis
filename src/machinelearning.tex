@@ -76,7 +76,7 @@ Samples are taken from the range of possible values for each parameter (Elastic 
 
 \subsubsection{Optimisation Results}
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/ridgealpha.png}
 \caption{The effect on error rate of changing the alpha parameter on Ridge Regression}
@@ -90,7 +90,7 @@ Samples are taken from the range of possible values for each parameter (Elastic 
 \label{fig:lassoalpha}
 \end{figure}
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/elasticnetab.png}
 \caption{The effect on error rate of changing the a and b parameters on Elastic Net}
@@ -102,14 +102,14 @@ None of the parameters have a drastic effect on the error rate of the models. Th
 \subsubsection{Comparing the Linear Models}
 Using the cross-validation method described previously, the 4 different linear models were trained with the parameters discovered via optimisation.
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/linearmodelsmovingwindow.png}
 \caption{The error rates for linear models using the moving window data representation}
 \label{fig:linearmodelsmovingwindow}
 \end{figure}
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/linearmodelsidentified.png}
 \caption{The error rates for linear models using the identity based data representation}
@@ -120,7 +120,7 @@ Figure \ref{fig:linearmodelsmovingwindow} shows that the performance of the mode
 One possible explanation is that the new data is not as relevant. Questions in Infandango are grouped - not strictly - by the type of questions they are: a question is likely to build on knowledge of the previous question. For this reason, results of questions within the same locality are likely to be useful in predicting the results of other questions in the same locality. As this locality is increased the questions become less and less likely to be relevant to the target question. Not only will these questions {\textit not add} information, they may also obscure the relevant information from the training algorithms, hence the error rates increase.
 Another potential reason for the increasing error rate is that as the window size increases there is less usable data per observed datapoint (student) to train on. This is shown in Figure \ref{fig:movingwindowdata}. Less training data means the algorithms have less time to adjust the weights used to predict scores.
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/movingwindowdata.png}
 \caption{(a) shows how much data can be used with a moving window of size 3, (b) shows the same for a window of size 6.}
@@ -135,7 +135,7 @@ As seen in figure \ref{fig:movingwindowdata} the moving window approach can, for
 \subsubsection{Conclusion of Linear Models}
 One interesting feature of the results so far is that all the linear models behave very similarly on both data representations. Since the graphs do not give any obvious indications of the best model, the averages have been calculated for each model for each data representation.
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{l || l | l}
 Models & Moving Window & Identity based \\ \hline \hline
@@ -153,7 +153,7 @@ The lowest average is shared by Linear Regression, Ridge Regression and Elastic 
 \subsection{Support Vector Machines}
 A Support Vector Machine is an algorithm that attempts to find a maximum margin hyperplane which is defined by the support vectors: the vectors which lie the distance (margin) away from the hyperplane. This margin is maximised so that the hyperplane lies as far away from each class as possible. A new data point is labelled depending on what side of the hyperplane it lies on. Figure \ref{fig:hyperplane} shows an example hyperplane on two dimensional data, although SVM can work on any number of dimensions.
 
-\begin{figure}[b!]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/hyperplane.png}
 \caption{A maximum margin hyperplane that separates two classes in a two dimensional space}
@@ -164,7 +164,7 @@ A Support Vector Machine is an algorithm that attempts to find a maximum margin 
 The simplest, linear Support Vector Machines attempt to find a maximum margin hyperplane using an equation which requires using the dot product between vectors. In the linear case the standard dot product is enough to allow the data to be separated. However, if the data is more complex it may not be the approriate function to use. Changing this dot product to be some other function (which must take two vectors and return a scalar value) is what is known as the "kernel trick". The candidate functions are known as kernel functions, and allow for the SVMs to be applied to non-linear data. 
 
 \subsubsection{Optimisation}
-Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, "degree", allows the specification of the degree of the kernel. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}.
+Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, "degree", allows the specification of the degree of the kernel. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}. 
 
 
 
