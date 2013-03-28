@@ -7,10 +7,10 @@ Each question has a label: {\bf warmup} questions are simple questions which can
 The primary source of feedback in Infandango is displayed in Figure \ref{fig:currentfeedback}. Each submission is marked with a set of JUnit tests and the fraction of these tests which are correct is displayed. This fraction is converted into a percentage and displayed on a red (0 - 40\%), orange (40\%-70\%) or green (70\%-100\%) background.
 More general feedback is also available which displays similar information but the results are displayed by week rather than by question. 
 
-\begin{figure}[p]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/currentfeedback.png}
-\caption{This is a crop of what will be displayed to the user for a given week}
+\caption{This is a crop of what is displayed to the user for a given week in the current Infandango system}
 \label{fig:currentfeedback}
 \end{figure}
 
@@ -27,16 +27,35 @@ Our online materials cover subjects ranging from math and finance to history and
 
 A blog post\cite{khan_blog} written by David Hu about Khan Academy demonstrates that different feedback measures can affect user performance significantly. Khan Academy gives users certain kinds of exercises, for example choosing the approriate position on a number scale. It can then generate endless variations of this problem for the user to continue attempting until they are deemed proficient\footnote{
 A proficiency is earned when a user is deemed to be "proficient" at a certain kind of exercise
-}. The original Khan Academy system required a user to get 10 consecutive exercises of a certain type correct before they can be deemed proficient at that type of exercise. In an attempt to improve this system, a logistic regression model is used to calculate the probability that a user passes the next exercise successfully, with a threshold of 94\% representing the new proficieny level. Over a 6 day period 10\% of users tested the new method. Users of the new system earned 20.8\% more proficiences, attempted 15.7\% more exercises and required 26\% less exercises per proficiency. Hu summarises by saying the boost seems to come from allowing users to move on from exercises which they already proficient at, without requiring them to complete their streak thus wasting time on something they already understand.
-Although the current system does not require perfection like Khan Academy did, it is possible that users are more reluctant to move on from exercises in which they get a minor error, and have just less than 100\%. Providing encouragement for the user to move on is one aim of this feedback design.
+}. The original Khan Academy system required a user to get 10 consecutive exercises of a certain type correct before they can be deemed proficient at that type of exercise. 
+The main problem with this system is that a user could get 9 consecutive exercises correct and then make a mistake on the final exercise. Before the user could move they would have to get 10 more consecutive exercises correct. It would be better if the system took into account how the user had performed previously. 
+In an attempt to improve this system he proposed using a logistic regression model to calculate the probability that a user passes the next exercise successfully, with a threshold of 94\% representing the new proficiency level. Over a 6 day period 10\% of users tested the new method. Users of the new system earned 20.8\% more proficiences, attempted 15.7\% more exercises and required 26\% less exercises per proficiency. Hu summarises by saying the boost seems to come from allowing users to move on from exercises which they already proficient at, without requiring them to complete their streak.
+Although the current system does not require perfection like Khan Academy did, it is possible that users are more reluctant to move on from exercises before they achieve 100\%. Infandango also lacks any cumulative feedback for a series of exercises. Providing feedback similar to the new Khan Academy approach could provide encouragement for the user to move on.
+
 \subsection{Programming Assessment}
-In {\it Automated Evaluation of Programming Assignments}\cite{automate_evaluation}, Kaushal and Singh describe various measures used as part of an automated marking system: regularity, efficiency, integrity and accuracy. Notably, Infandango only gives feedback on one of these areas, accuracy. The paper tracks the change in these measures as students use the system and find that there is a general improvement on all categories when feedback is based on these measurements. This shows that accuracy is not the only measurement that should be used to provide feedback and these are possibilities to be considered for Infandango.
+In {\it Automated Evaluation of Programming Assignments}\cite{automate_evaluation}, Kaushal and Singh describe various measures used as part of an automated marking system: regularity, integrity, efficiency and accuracy. \paragraph{Regularity} The time at which a submission is made with respect to the deadline for that submission
+\paragraph{Integrity} The originality of the document determined through a plagiarism detector
+\paragraph{Efficiency} A qualitative measure of the time taken and memory used by a student's programs
+\paragraph{Accuracy} The percentage of test cases for each program that the student's submission passes
+Infandango only gives feedback on one of these areas: accuracy. The paper tracks the change in these measures as students use the system and find that there is a general improvement on all categories when feedback is based on these measurements. This shows that accuracy is not the only measurement that should be used to provide feedback and these are possibilities to be considered for Infandango.
+
 \subsection{Visualisation}
 In his book {\it Visual Display of Quantitative Information}\cite{visual_explanations}, Edward Tufte discusses methods of efficiently and suitably displaying information. In chapter 4 Data-Ink and Graphical Redesign, Tufte introduces the idea of Data-Ink: The amount of "ink" which is actually used to represent the data you are interested in. In Tufte's words:
 
 \begin{quote}Data-ink is the non-erasable core of a graphic, the non-redundant ink arranged in reponse to the variation in the numbers represented.
 \end{quote}
-Given that data-ink is unavoidable and desirable information, designers should strive towards a high data-ink ratio, removing as much non-information ink as possible to avoid overwhelming the data. Tufte then continues by giving examples where redundant information is desirable, explaining that it should not always be removed.
+Given that data-ink is unavoidable and desirable information, designers should strive towards a high data-ink ratio, removing as much non-information ink as possible to avoid overwhelming the data. Tufte then continues by giving examples where redundant information is desirable.
+Tufte takes a graphic from Linus Pauling's General Chemistry (San Francisco, 1947) p64. Based on the low data-ink ratio principle, he removes the grid marks and part of the frame which leaves little else but the data itself.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/tuftegraphs.png}
+\caption{(a) shows the original graph and (b) shows how Tufte recommends changing the graph to remove redundant information}
+\label{fig:tuftegraphs}
+\end{figure}
+
+
+Tufte concludes the chapter with 5 maxims summarising this principle.
 
 \begin{verse}Above all else show the data.
 	Maximize the data-ink ratio.
@@ -45,6 +64,6 @@ Given that data-ink is unavoidable and desirable information, designers should s
 Revise and edit.
 \end{verse}
 
-These principles shall be considered when designing the visualisation of the feedback score.
+These maxims shall be considered when designing the visualisation of the feedback score.
 
 \subsection{Machine Learning}

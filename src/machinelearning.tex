@@ -14,7 +14,7 @@ The two data representations differ on essentially one issue: is the question id
 Deciding on the models to use is a difficult process. However, since ski-kit learn provides algorithms optimised for speed, most models are very quick to train and test. This allows the option of starting with a variety of models, evaluating how they behave against each other. The models can be split into two categories, depending on the type of data the expect and output.
 
 \subsection{Classifiers}
-Classifiers attempt to identify the class a student should be assigned to depending on the input features. Notably, these classes should be discrete but what the models are trying to predict is a continuous percentage. To resolve this problem some sort of discretisation needs to be performed to change a percentage into a class. The granularity of this discretisation is important as it determines the amount of accuracy that can be acheived. 
+Classifiers attempt to identify the class an observation should be assigned to depending on the input features. Notably, these classes should be discrete but what the models are trying to predict is a continuous percentage. To resolve this problem some sort of discretisation needs to be performed to change a percentage into a class. The granularity of this discretisation is important as it determines the amount of accuracy that can be achieved. 
 
 A natural discretisation is already present in the current design: the visualisation on the webpage. The visualisation uses 9 blocks to display the score. For the sake of this application, further accuracy would be lost when the information is displayed. So, in order to use classifiers on this problem, the output feature (the question we want to predict) will be discretised into one of 9 classes, distributed evenly over the range 0-100%.
 
@@ -24,7 +24,16 @@ Unlike the classifiers, no adaptations need to be made to the data before supply
 \subsection{Model definitions}
 
 \paragraph{Logistic Regression}
-Although the name is misleading, this model is a classifier. It is originially a binary classifier but this problem has been formulated to use 9 classes. The multivariate implementation used by sci-kit uses the one-vs-all method. It can also use either L1 or L2 regularisation.
+Although the name is misleading, this model is a classifier. It is originally a binary classifier but this problem has been formulated to use 9 classes. The multivariate implementation used by sci-kit uses the one-vs-all method. It can also use either L1 or L2 regularisation. What regularisation means in this context is how error is measured, and so how the model is penalised for being wrong.
+\subparagraph{L1}
+\begin{displaymath}
+\left \|x  \right \|_{1} = \sum_{i}^{ } \left |x_{i}\right |
+\end{displaymath}
+
+\subparagraph{L2}
+\begin{displaymath}
+\left \|x  \right \|_{2} = \sqrt{\sum_{i} \left |x^{2}_{i}\right |}
+\end{displaymath}
 
 \subsubsection{Linear Models}
 The following models are all linear regressions: they expect the target value to be a linear combination of the input features. The differences between them occur in the constraints applied to the coefficients.
@@ -253,3 +262,6 @@ SVR RBF & 53.43151341 \\ \hline
 
 \section{Conclusion}
 3 models perform very similarly on both approaches which makes choosing between them more difficult, although it is at least clear that it should be a classifier. Due to having the lowest combined average, the model chosen as the best SVM is classification with a polynomial kernel of degree 1.
+
+\subsection{Artificial Neural Network}
+

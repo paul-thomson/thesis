@@ -31,11 +31,11 @@
 * **Conclusion**
 
 ## Implementation ##
-* **Overview**
-* **CSS Design**
-* **Prediction Model**
-* **System Integration**
-* **Improvements**
+* Overview
+* CSS Design
+* Prediction Model
+* System Integration
+* Improvements
 
 ## Conclusion ##
 * **Stress the main acheivements:**
