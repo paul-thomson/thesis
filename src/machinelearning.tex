@@ -11,7 +11,9 @@ The first action to be taken when creating a model is to determine the features.
 The two data representations differ on essentially one issue: is the question identity retained by the input features? One model says yes: retain the identities of the questions by assigning an index of the input vector to the same question each time (which means a new model must be created for each question). The second approach says no: create a moving window of input features from the questions immediately before the question we want to predict. This approach is quite wasteful: If the model is predicting the score for question 20 then it takes the results from questions 14 - 19 and ignores the other 13 questions. The model cannot take all the scores individually or it would be identical to the previous model, so a crude method of using all that extra data is to add an extra feature which is the numerical average of the unused data.
 
 \section{Preliminary models}
-Deciding on the models to use is a difficult process. However, since ski-kit learn provides algorithms optimised for speed, most models are very quick to train and test. This allows the option of starting with a variety of models, evaluating how they behave against each other. The models can be split into two categories, depending on the type of data the expect and output.
+Most models will be chosen from the scikit-learn package except for Artificial Neural Networks (ANN) which are not present in scikit-learn. Pybrain provides the implementation of ANNs used here. As this is primarily an implementation issue this will be discussed further in Chapter \ref{implementation}.
+
+Deciding on the models to use is a difficult process. However, since scikit-learn provides algorithms optimised for speed, most models are very quick to train and test. This allows the option of starting with a variety of models, evaluating how they behave against each other. The models can be split into two categories, depending on the type of data the expect and output.
 
 \subsection{Classifiers}
 Classifiers attempt to identify the class an observation should be assigned to depending on the input features. Notably, these classes should be discrete but what the models are trying to predict is a continuous percentage. To resolve this problem some sort of discretisation needs to be performed to change a percentage into a class. The granularity of this discretisation is important as it determines the amount of accuracy that can be achieved. 
@@ -260,8 +262,36 @@ SVR RBF & 53.43151341 \\ \hline
 \label{table:svmsidentityaverages}
 \end{figure}
 
-\section{Conclusion}
+\subsubsection{Conclusion}
 3 models perform very similarly on both approaches which makes choosing between them more difficult, although it is at least clear that it should be a classifier. Due to having the lowest combined average, the model chosen as the best SVM is classification with a polynomial kernel of degree 1.
 
 \subsection{Artificial Neural Network}
+The ANN implementation used for this project is provided by the Pybrain library. An ANN takes the inputs, passes all the inputs to each unit in a "hidden" layer and the outputs of each unit in the hidden layer are passed to the output units. The units in the hidden layer are the artifial neurons and can be of various types. For example, a neuron could be the weighted sum of the inputs. Figure \ref{fig:nn} shows how an ANN suitable for this problem might look. 
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/nn.png}
+\caption{The topology of an Artificial Neural Network with 5 inputs, one hidden layer with an unspecified number of units and one output unit.}
+\label{fig:nn}
+\end{figure}
+
+Since Pybrain is a library which focuses specifically on ANNs it has even more customisation than scikit-learn does for its models. The two parameters investigated are the type of units in the hidden layer and the number of units in the hidden. Changing these parameters allows the model to be complex enough if the problem requires.
+
+\subsubsection{Optimisation}
+Pybrain provides many types of hidden layer, including GaussianLayer, LinearLayer, SigmoidLayer and TanhLayer. Due to technical issues which will be discussed in Chatper \ref{implementation} the layers chosen were SigmoidLayer and TanhLayer.
+
+\subsubsection{Results}
+Figure \ref{fig:nnall200} shows how different parameters effect the error of the model. Both models perform similarly except the TanhLayer has a large drop in error rate with 130 hidden units.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/nnall200.png}
+\caption{The effect of changing the number of hidden units on Neural Networks with two different hidden layer types.}
+\label{fig:nnall200}
+\end{figure}
+
+\subsubsection{Conclusion}
+There is little to choose between both models, as both have the same general trend and neither performs consistently better than the other. Although it is possibly an anomaly, the model chosen is Artificial Neural Network with Sigmoid squashing function as the hidden layer type with 130 hidden units.
+
+\subsection{Final Model Selection}
+The final task is to choose the model that was going to be used in the system. To do this, each of the models are run on trained and tested on both data representations.

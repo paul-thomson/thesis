@@ -3,6 +3,10 @@
 \section{Introduction}
 Following the design process, the two elements were designed separately and then integrated with Infandango. This step required understanding of how the Infandango system works, specifically how it renders webpages. The completed system gives a visual display for the predicted score retrieved from the model.
 
+\section{Language and Tools}
+Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. Java because I had the most experience with it and some parts of Infandango are written in Java. Most of Infandango was, however, written in Python with which I also had experience. Due to the emphasis the project has on machine learning, R\cite{r_site} was another approriate language. 
+The final decision was to use Python with scikit-learn\cite{scikit_site} and pybrain\cite{pybrain_site} libraries: this provides the simplest integration with Infandango (since the parts with which this will need to be integrated are written in Python) and the libraries provide a variety of machine learning methods.
+
 \section{Visual Design}
 The final design is relatively simple and as the system is web based, web technologies like Javascript and CSS were considered. The choice between implementations strategies was based on the ease of integration with Infandango: although Infandango does already use Javascript like the Scriptaculous library\cite{scriptaculous_cite}, CSS is more heavily used. On the lab exercise page Infandango displays a single score for an exercise with a background colour determined by the score. Since this is already implemented using CSS, a similar approach was used for this implementation.
 

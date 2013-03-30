@@ -1,9 +1,7 @@
 \chapter{Design}
 \label{design}
-The literature has shown us that machine learning methods can be useful in generating feedback for students, and this can be combined with a visual display for intuitive understanding. The first design decision to be made is the language and libraries to be used when writing the program.
-\section{Language and Tools}
-Two languages are immediate possibilities for implementation: Java\cite{java_site} and Python\cite{python_site}. Java because I had the most experience with it and some parts of Infandango are written in Java. Most of Infandango was, however, written in Python with which I also had experience. Due to the emphasis the project has on machine learning, R\cite{r_site} was another approriate language. 
-The final decision was to use Python with scikit-learn\cite{scikit_site} and pybrain\cite{pybrain_site} libraries: this provides the simplest integration with Infandango (since the parts with which this will need to be integrated are written in Python) and the libraries provide a variety of machine learning methods.
+The literature has shown us that machine learning methods can be useful in generating feedback for students, and this can be combined with a visual display for intuitive understanding.
+
 
 \section{Proposed Design}
 Using the data from a previous year a model will be trained using machine learning methods. The model will output a value which will be displayed somewhere in the Infandango system. In Chapter \ref{machinelearning} these potential models will be explored further, leading to a decision on which is the best to use in Infandango.
