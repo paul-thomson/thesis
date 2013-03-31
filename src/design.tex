@@ -59,6 +59,24 @@ There are 5 input features. The features will be decided based on their locality
 Although this approach does remove the significant information of the identity of the questions it is simple to implement and it also provides a lot more training data: There are 30 questions, and so using this approach for each student there would be 25 potential training examples. However, using the previous model there would only be 1 item for each model.
 
 \subsection{Visualisation}
+The goal of the visualisation is to use the predicted score to generate some abstract representation of how well the user is doing. In the same way the Khan Academy system requires perfection, allowing the user to see this score directly may cause them to try achieve perfection, thus wasting time on exercises they can already perform well. Using the predicted score to generate some less precise information than a percentage may allow the user to move forward to complete exercises they have not tried yet.
+
+\subsubsection{Ideas}
+Using an image editing tool some mockup designs were created. These designs were created to be simple enough to display information at a glance and also be suitable to place on every page, so a student always has access to their current process. Figure \ref{fig:visualbar} shows ideas using a sequence of boxes which fill as the score increases. A similar bar shape could be used which has a continuous filling mechanism but this lacks the abstraction granted be the discretisation into boxes. Figure \ref{fig:visualcircles} shows similar ideas using a circle instead of a bar shape. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/visualbar.png}
+\caption{(a), (b) and (c) show the progressions of different visualisations as the score increases. (a) and (b) are monochrome while (c) changes depending on the score}
+\label{fig:visualbar}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/visualcircles.png}
+\caption{How different visualisations change with an increasing score. Each of the three methods have different colour schemes and filling methods which can be swapped between the methods}
+\label{fig:visualcircles}
+\end{figure}
 
 \section{Integration with Infandango}
 The final step in completing the project is to integrate the system with Infandango. This is a non-trivial task whose outcome will determine the future usability of this addition to the system. Infandango uses Django\cite{django_site} to generate the information which is displayed via HTML and CSS. This includes information such as the submissions and the scores received for each submission. The feedback score is of a similar nature so, in line with the design of Infandango, the feedback score will be displayed using HTML and CSS after being generated via Django. The precise details of this integration will be discussion in Chapter \ref{implementation}.

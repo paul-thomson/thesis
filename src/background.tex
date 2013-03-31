@@ -18,6 +18,7 @@ More general feedback is also available which displays similar information but t
 The system has been used with the first year Java programming course at the University of Edinburgh for a few years. The database information for these years has been kept and retains all the information about submissions: marks, submission time, number of resubmissions. The database for one year has been anonymised and made available for use for this project. Only one year is available because the questions have changed since previous years and therefore the data would be inconsistent with the current questions.
 
 \section{Literature}
+
 Khan Academy\cite{khan_site} is a website which provides users with online education material:
 \begin{quote}
 Our online materials cover subjects ranging from math and finance to history and art.  With thousands of bite-sized videos, step-by-step problems and instant data\cite{ka_faq}
@@ -48,7 +49,7 @@ In his book {\it Visual Display of Quantitative Information}\cite{visual_explana
 
 \begin{quote}Data-ink is the non-erasable core of a graphic, the non-redundant ink arranged in reponse to the variation in the numbers represented.
 \end{quote}
-Given that data-ink is unavoidable and desirable information, designers should strive towards a high data-ink ratio, removing as much non-information ink as possible to avoid overwhelming the data. Tufte then continues by giving examples where redundant information is desirable.
+Data-ink is desirable, unavoidable information so designers should strive towards a high data-ink ratio, removing as much non-information ink as possible to avoid overwhelming the data. Tufte then continues by giving examples where redundant information is desirable.
 Tufte takes a graphic from Linus Pauling's General Chemistry (San Francisco, 1947) p64. Figure \ref{fig:tuftegraphs} shows how, based on the low data-ink ratio principle, he removes the grid marks and part of the frame which leaves little else but the data itself.
 
 \begin{figure}[h!]
@@ -71,3 +72,8 @@ Revise and edit.
 These maxims shall be considered when designing the visualisation of the feedback score.
 
 \subsection{Machine Learning}
+The cognitive modelling of students allows can provide access to important information for automatic tutoring systems. A cognitive model is a computer model of the cognitive processes of a student, which allows insight into how the student might approach the problem, or how difficult it might be. Building this model manually requires a lot of human effort\cite{simstudent_better} and so automating this process would be desirable.
+
+SimStudent is a machine learning agent designed to build cognitive models automatically via machine learning. The machine learning method uses for parts of SimStudent is a First Order Inductive Learner, which is given some some observations and some background knowledge from which it draws hypotheses. Using algebra as an example, SimStudent will be given some basic operators as background knowledge (add, subtract etc) and will then be given an algebraic problem to solve. It will then suggest the next step to the student who may reject or accept the suggestion, thus providing negative or positive feedback to SimStudent to modify its production rules.
+
+Providing the students perform consistently, SimStudent can model the performance of the students with an accuracy of 83\%\cite{simstudent}.

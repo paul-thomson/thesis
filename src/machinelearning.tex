@@ -302,18 +302,29 @@ There is little to choose between both models, as both have the same general tre
 \subsection{Final Model Selection}
 The final task is to choose the model that is going to be used in the system. To do this, each of the models are trained and tested on both data representations. Each model uses the parameters determined through optimisation.
 
+\subsubsection{Baseline}
+To see if the machine learning actually learns anything that a simple estimate could not have achieved, a baseline is used. The baseline used is simple and intuitive: take the average of the available features. By measuring the accuracy of the models against this baseline we can see if performing machine learning is worthwhile.
+
+\subsubsection{Results}
+The models from the previous sections are trained and tested alongside the baseline for both data representations.
+
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.8\textwidth]{images/movingwindowfinal.png}
+\includegraphics[width=0.8\textwidth]{images/finalmovingwindow.png}
 \caption{The performance of the optimised models using the moving window approach}
-\label{fig:movingwindowfinal}
+\label{fig:finalmovingwindow}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.8\textwidth]{images/identifiedfinal.png}
+\includegraphics[width=0.8\textwidth]{images/finalidentified.png}
 \caption{The performance of the optimised models using the identity based approach}
-\label{fig:identifiedfinal}
+\label{fig:finalidentified}
 \end{figure}
 
-Figure \ref{fig:movingwindowfinal}
+Figure \ref{fig:finalmovingwindow} shows the error of the models on the moving window approach. A clear ordering can be seen in which only the support vector machine performs better than the baseline. 
+
+Figure \ref{fig:finalidentified} shows the error of the models on the identity based approach. All classifiers show a much less consistent performance on this data representation though the general trend remains the same as in the previous approach. 
+
+\subsubsection{Conclusion}
+Through a process of optimisations the best models were chosen for each machine learning algorithm. These models then had their performance measured against a baseline, which proved that only the support vector machien performed better than simply taking the average of the available submissions. The moving window approach maintains a consistent performance across all the questions. The identity based approach shows erratic behaviour which sometimes performs better than the moving window approach but sometimes performs worse. On average the models perform quite similarly and due to the implementation advantages of the moving window approach (Chapter \ref{design}) the final model is a Support Vector Classifier using a polynomial kernel of degree 1 on the moving window approach.
