@@ -1,2 +1,28 @@
 \chapter{Conclusion}
 \label{conclusion}
+\section{Evaluation of Goal Completion}
+At the beginning of the project some objectives were set in the hope that their completion would improve the feedback of the Infandango system. 
+
+\subsection{Research of Literature}
+The research conducted into the current available literature around the subject provided insight into the applicability of machine learning for generating feedback, the best practices for displaying information and general machine learning practices. This insight made the lack of cumulative feedback in Infandango clear, and provided a solution to this problem using machine learning to model the students' performances.
+
+Some areas which could be investigated include analysis (both manual and machine) of the submitted code to look for common errors, qualitative analysis to judge some more general aspect of the code rather than accuracy using jUnit tests or looking at any work done in trying to make jUnit error messages more understandable to the beginner. There are many areas which are worth exploring to try and improvement the feedback of Infandango but covering such a wide range of topics in the period of time given was unfeasible. 
+
+\subsection{Feedback Design}
+The final design was to create a model of the performance of the students using machine learning methods, use the model to predict the future performance of the students and then display that to the user through the Infandango webpage. 
+
+It was demonstrated that the final machine learning model was more accurate at predicting the performance of students than the baseline, showing that the machine learning is worthwhile for the sake of accuracy. As is often the case with machine learning, there are many more models and many more optimisations which could be investigated to increase the accuracy. 
+
+\subsection{Implementation and Integration}
+The implementation and integration is fully complete, and Infandango can run successfully while predicting scores for students. Although this was not tested in a production environment it was tested locally with all parts, including databse. The only difference between the test environment and the production environment is the accessibility from outside the computer Infandango is running on. Allowing this accessibility and introducing the system to heavy usage would be the next step in testing the implementation.
+
+\subsection{User Evaluation}
+This objective is the only objective which did not complete, due to ethical issues. User evaluation is crucial in determining the effect the feedback has on the performance of the students, measuring the rate of progress and total time spent on each exercise. User evaluation could also allow for interviews with students who have used both systems which could determine if the students found specific uses for the feedback. The results could then be analysed to determine how the mechanism would need to change in order to be fully utilised by students.
+
+\subsection{Overall Feedback Improvement}
+Most of the original objectives were completed, and an additional source of feedback has been added to Infandango. The method can also be extended to work with other features, allowing the feedback to be more general and potentially give more qualitative feedback. 
+
+\section{Further Work}
+One result from the literature exploration is the potential for feedback based on more than just scores. The current implementation only uses scores but any data which can be numerical, ordinal or categorical can be used as well, since the machine learning models are flexible in their inputs. This allows for a lot of potential research into how different features of the models affect the outcome. For example, another feedback widget could be created which uses the submissions times as features instead. This could then try to predict the scores someone receives (someone who hands in exercises late tends to receive less marks) or it could try predict the time taken before their next submission. If this time is too long it could tell the student to start the exercises sooner.
+
+The only use of the predictions currently is one instantaneous display. One potential area for further work is to cumulate this data and use it in some way to represent a student's progress across the whole semester. For example, a graph could be created plotting the predicted score against the days/weeks of the semester. This graph may provide insight into what questions a student struggled with a therefore which topics might be worth revising.
