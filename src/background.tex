@@ -1,14 +1,26 @@
 \chapter{Literature}
 \label{background}
 
-\section{Programming Assessment}
-In {\it Automated Evaluation of Programming Assignments}\cite{automate_evaluation}, Kaushal and Singh describe various measures used as part of an automated marking system: regularity, integrity, efficiency and accuracy. 
-\paragraph*{Regularity} The time at which a submission is made with respect to the deadline for that submission
-\paragraph*{Integrity} The originality of the document determined through a plagiarism detector
-\paragraph*{Efficiency} A qualitative measure of the time taken and memory used by a student's programs
-\paragraph*{Accuracy} The percentage of test cases for each program that the student's submission passes
+\section{Automated Marking Systems}
+There are many other systems like Infandango, and by looking at these systems and comparing the different forms of feedback these systems give to the students the feedback provided by Infandango can be improved.
 
-The experimenters track the change in these measures as students use the system and find that there is a general improvement on all categories when feedback is based on these measurements. This shows that accuracy is not the only measurement that should be used to provide feedback and these are possibilities to be considered for Infandango. Currently the only feedback Infandango provides is based on accuracy, so creating a form of feedback capable of considering these other areas could be worthwhile.
+These systems are being discussed primarily for their marking and feedback methods, thus the details of how submissions are made, how the system is accessed etc will not be discussed, but some form of submission should be assumed for all these systems.
+
+\subsection{RoboProf\cite{roboprof}}
+RoboProf provides small programming exercises which start simple and get progressively harder, with immediate feedback about the correctness of the program guiding the student. For example, a student may be provided with a program which loops over a range of numbers and prints them. The student may then be asked to modify the for loop in order to print out a different series of numbers. The immediate feedback gives the students encouragement and motivates them to keep trying more questions. This approach is similar to Infandango because both systems return immediate feedback based purely on the correctness of the output of the problem, and this is a common approach in other systems too\cite{webtoteach}.
+
+In the paper one problem is identified: the immediate feedback is sometimes too addictive, and the students may end up spending more time than is necessary performing the exercises.
+
+\subsection{Automated Evaluation of Programming Assignments\cite{automate_evaluation}}
+Kaushal and Singh describe various measures used as part of an automated marking system: regularity, integrity, efficiency and accuracy. 
+\subparagraph*{Regularity} The time at which a submission is made with respect to the deadline for that submission
+\subparagraph*{Integrity} The originality of the document determined through a plagiarism detector
+\subparagraph*{Efficiency} A qualitative measure of the time taken and memory used by a student's programs
+\subparagraph*{Accuracy} The percentage of test cases for each program that the student's submission passes
+
+The experimenters track the change in these measures as students use the system and find that there is a general improvement on all categories when feedback is based on these measurements. There are other systems which use similar measures of feedback\cite{ASSYST} and this feedback has be shown to be at least as good as manual feedback\cite{coursemaster}.
+
+One disadvantage of having different measures for feedback is that this still requires manual work in the specification of the feedback. For example, the ASSYST system\cite{ASSYST} uses a metric first proposed by Berry and Meekings\cite{berrymeekings} to measure the style of the submitted programs. This means tutors must specify four values which create a simple graph which determines the mark a student receives based on their style score (see paper for details). This means that for each new measurement taken, manual work must be done to turn this measurement into feedback for the students.
 
 \section{Visualisation}
 In his book {\it Visual Display of Quantitative Information}\cite{visual_explanations}, Edward Tufte discusses methods of efficiently and effectively displaying information. In chapter 4 Data-Ink and Graphical Redesign, Tufte introduces the idea of Data-Ink: The amount of "ink" which is actually used to represent the data you are interested in. In Tufte's words:
@@ -67,4 +79,6 @@ Although the current Infandango system does not require perfection like Khan Aca
 
 
 \section{Conclusion}
+The review of other automated marking systems shows us that there are other forms of feedback - not just correctness of code - which can be used in such systems. However, these systems still require some manual specification about how the measurement is translated into student feedback. A method of feedback which automatically translated measurements into feedback would be an interesting addition to Infandango.
+
 The literature provides a strong case for applying machine learning to the problem of improving automated feedback. Infandango currently lacks feedback which uses information from multiple exercises, and doing so may allow more detailed and targeted feedback. While cognitive modelling is effective, it is more suited to rule based learning, where logic can be applied to the knowledge in order to learn hypotheses. The Khan Academy approach is more applicable to Infandango as it only needs to know the mark for an exercise, not the rules which a student applies in order to solve the exercise.
