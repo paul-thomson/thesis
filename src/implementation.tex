@@ -42,7 +42,7 @@ def labSheetListMenu(request):
   return {"lab_sheets": LabSheet.objects.all() }
 \end{verbatim}
 
-This first half, {\tt"lab_sheets"}, is the name webpages can use to refer to the object. The second half, {\tt LabSheet.objects.all()}, is the object referred to by the first half, and is a database request. This context processor allows all webpages to access the list of lab sheets, which is needed for the navigation sidebar.
+This first half, \texttt{ "lab\_sheets" }, is the name webpages can use to refer to the object. The second half, \texttt{LabSheet.objects.all()}, is the object referred to by the first half, and is a database request. This context processor allows all webpages to access the list of lab sheets, which is needed for the navigation sidebar.
 
 \section{Technical Issues}
 
@@ -60,6 +60,7 @@ Using the Django context processor functionality a function is hooked into every
 \includegraphics[width=0.8\textwidth]{images/contextprocessor.png}
 \caption{A flowchart of the context processor function and how it interacts with Django}
 \label{fig:contextprocessor}
+\end{figure}
 
 \begin{figure}[h!]
 \centering
