@@ -3,18 +3,18 @@
 Previous work has shown that machine learning can be a great method of generating feedback for automated marking systems. Machine learning also has the advantage of allowing a variety of measurements to plug into the final feedback: if a measurement can be made of a submission or a student, this measurement can be added to the inputs of the machine learning model and the learning algorithm will automatically learn how to use this new measurement.
 
 \section{Proposed Design}
-Using the data from a previous year a model will be trained using machine learning methods. The model will output a value which will be displayed somewhere in the Infandango system. In Chapter \ref{machinelearning} these potential models will be explored further, leading to a decision on which is the best to use in Infandango.
+Using the data provided of submissions from a previous year, a model will be trained using machine learning methods. The model will output a value which will be displayed somewhere in the Infandango system. In Chapter \ref{machinelearning} these potential models will be explored further, leading to a decision on which is the best to use with Infandango.
 \subsection{Model}
 The Infandango system is similar to the Khan Academy system and so the method Khan Academy uses is an approriate starting point. Infandango allows a user to submit many solutions for an exercise, and so does Khan Academy. However, there are two properties that distinguish Khan Academy from Infandango:
 
 \begin{itemize}
-\item For each exercise, the next solution submitted is for the same kind of question but the details are randomly generated: a user can keep submitting solutions to an exercise even after they get one solution correct. However, in Infandango once a user gets 100\% there is no reason for the user to submit another solution because they have already perfected that exercise
-\item A submission is given a binary score: correct or incorrect
+\item For each exercise, the next solution submitted is for the same kind of question but the details are randomly generated: a user can keep submitting solutions to an exercise even after they get one solution correct. However, in Infandango resubmissions are for exactly the same question, so once a user gets 100\% there is no reason for the user to submit another solution because they have already perfected that exercise
+\item A submission is given a binary score: correct or incorrect, whereas Infandango gives a percentage score as there are multiple tests for the same submission
 \end{itemize}
 
 The first difference is significant, and requires a change in granularity of the data: instead of measuring progress on a submission-by-submission basis, the focus should be on the final mark a user will achieve for an exercise. So instead of trying to predict the score for the next {\it submission}, try to predict the final score for the next {\it question}.
 
-With an idea of how the model was going to work, some exploratory work was done on the data. Although users are encouraged to answer all questions, they do not receive marks directly for each question. This makes missing data a potential problem. Figure \ref{fig:missing_data} shows the submission rates for all the questions. It shows that submission rates can get as low as around 10\% for some questions. Figure \ref{fig:missing_data_core} shows the submission rates for only core questions. The submission rates are on average higher than for non-core questions. Combined with the fact that users are likely to have more motivation for core questions (since they potentially count towards their final mark) data from now on will only be considering core questions.
+With an idea of how the model was going to work, some exploratory work was done on the data. Although users are encouraged to answer all questions, they do not receive marks directly for each question. This means students do not have to answer all questions which makes missing data a potential problem. Figure \ref{fig:missing_data} shows the submission rates for all the questions. It shows that submission rates can get as low as around 10\% for some questions. Figure \ref{fig:missing_data_core} shows the submission rates for only core questions. The submission rates are on average higher than for non-core questions. Combined with the fact that users are likely to have more motivation for core questions (since they potentially count towards their final mark) data from now on will only be considering core questions.
 
 \begin{figure}[h!] 
 \centering
