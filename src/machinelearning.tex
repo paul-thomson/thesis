@@ -1,15 +1,15 @@
 \chapter{Model Selection}
 \label{machinelearning}
-In Chapter \ref{design} two data represenations were described which could be used in this scenario. To find out which data representation to use the first step is to choose some machine learning models to test on. Selecting the best model is a frequent problem which is still an active area of research. The approach here will choose a selection of models from which to start. These models will be trained and tested on the data provided from the submissions of a previous year using k-fold cross-validation. The test results will then be analysed to choose a model with the lowest predicted error. 
+In Chapter \ref{design} two data represenations were described which could be used in this scenario: moving window approach which treats the question results anonymously and the identity based approach which must be have a separate model to predict each question. To find out which data representation to use the first step is to choose some machine learning models to test on. Selecting the best model is a frequent problem which is still an active area of research. The approach here will choose a selection of models from which to start. These models will be trained and tested on the data provided from the submissions of a previous year using k-fold cross-validation. The test results will then be analysed to choose a model with the lowest predicted error. 
 
 \section{Feature selection}
-The first action to be taken when creating a model is to determine the features. The features determine the inputs to the model; the data which the model can use to learn and predict. Although the content of the inputs has been mostly decided already - the submission score - there is one aspect which has not been decided: how many scores should be considered? The moving window model must decide how large the window should be and the identity based model should consider the performance across the different model instantiations. The number of input features is a factor which will be discussed in the results section.
+The first action to be taken when creating a model is to determine the features. The features determine the inputs to the model; the data which the model can use to learn and predict. Although the content of the inputs has been mostly decided already --- the submission score --- there is one aspect which has not been decided: how many scores should be considered? The moving window model must decide how large the window should be and the identity based model should consider the performance across the different model instantiations. The number of input features is a factor which will be discussed in the results section.
 
 \subsection{Question Identity}
-The two data representations differ on essentially one issue: is the question identity retained by the input features? One model says yes: retain the identities of the questions by assigning an index of the input vector to the same question each time (which means a new model must be created for each question). The second approach says no: create a moving window of input features from the questions immediately before the question we want to predict. This approach is quite wasteful: If the model is predicting the score for question 20 then it takes the results from questions 14 - 19 and ignores the other 13 questions. The model cannot take all the scores individually or it would be identical to the previous model, so a crude method of using all that extra data is to add an extra feature which is the numerical average of the unused data. By adding this feature to the moving window approach it remains simpler but doesn't completely ignore all the questions outside of the window.
+The two data representations differ on essentially one issue: is the question identity retained by the input features? One model says yes: retain the identities of the questions by always putting the same question into the same position in the input vector (which means a new model must be created for each question). The second approach says no: create a moving window of input features from the questions immediately before the question we want to predict. This approach ignores a lot of the information: If the model is predicting the score for question 20 then it takes the results from questions 14 - 19 and ignores the other 13 questions. The model cannot take all the scores individually or it would be identical to the previous model, so a crude method of using all that extra data is to add an extra feature which is the numerical average of the unused data. By adding this feature to the moving window approach it remains simpler but doesn't completely ignore all the questions outside of the window.
 
 \section{Preliminary models}
-Most models will be chosen from the scikit-learn package except for Artificial Neural Networks (ANN) which are not present in scikit-learn. Pybrain provides the implementation of ANNs used here. As this is primarily an implementation issue this will be discussed further in Chapter \ref{implementation}.
+Most models will be chosen from the scikit-learn\cite{scikit_site} package except for Artificial Neural Networks (ANN) which are not present in scikit-learn. Pybrain provides the implementation of ANNs used here. As this is primarily an implementation issue this will be discussed further in Chapter \ref{implementation}.
 
 Deciding on the models to use is a difficult process. However, since scikit-learn provides algorithms optimised for speed, most models are very quick to train and test. This allows the option of starting with a variety of models and then evaluating how they behave against each other. Depending on the type of data the expect and output, the models can be split into two different types: classifiers and regression models.
 
@@ -19,12 +19,38 @@ Classifiers attempt to identify the {\it class} an observation should be assigne
 A natural discretisation is already present in the current design: the visualisation on the webpage. The visualisation uses 9 blocks to display the score. For the sake of this application, any further accuracy would be lost when the information is displayed. So, in order to use classifiers on this problem, the output feature (the score we want to predict) will be discretised into one of 9 classes, distributed evenly over the range 0-100\%.
 
 \subsection{Regression}
-Unlike the classifiers, no adaptations need to be made to the data before supplying it to the regression models sincer regressions output a continuous value like a percentage.
+A regression model differs from a classifier because it tries to predict a continuous, numerical value. In this case, the regression will try directly predict the score for the next exercise.
+Unlike the classifiers, no adaptations need to be made to the data before supplying it to the regression models since regressions output a continuous value like a percentage.
 
 \subsection{Model definitions}
 
+
+\subsubsection{Linear Models}
+The following models are all linear regressions: they expect the target value to be a linear combination of the input features. The differences between them occur in the constraints applied to the coefficients.
+
+\paragraph*{Linear Regression}
+This is the simplest linear model. It uses Ordinary Least Squares to estimate the coefficients of the input vector. This means it tries to minimise the residual sum of squares between the result given by the labelled data and the result predicted by the model. The equation for a linear regression is the sum of the weighted input:
+
+\begin{displaymath}
+y = w_{0} + w^{T}x
+\end{displaymath}
+
+$w_{0}$ is the bias value which is a constant unaffected by the input vector. The vector $w$ is the weight vector which is calculated during training, and $w^{T}$ is the transpose of this vector to allow it to be multiplied by $x$, the input vector.
+
+\paragraph*{Ridge Regression}
+This model adapts Linear Regression by adding to the minimisation value a penalty depending on the size of the coefficients. Scikit allows control of this penalty through the {\it alpha} parameter.
+
+\paragraph*{LASSO}
+This model applies a similar penalty as Ridge Regression except use L1 norm instead. Scikit allows control of this penalty through the {\it alpha} parameter.
+
+\paragraph*{Elastic Net}
+Elastic Net combines the penalties of Ridge Regression and LASSO to provide a tradeoff between the two functionalities. This tradeoff can be controlled through the l1\_ratio parameter.
+
+\paragraph*{Cross-validation}
+Scikit also provides versions of these models which automatically apply cross-valdiation to determine the best values for their respective parameters.
+
 \paragraph*{Logistic Regression}
-Although the name is misleading, this model is a classifier. It is originally a binary classifier but this problem has been formulated to use 9 classes. The multivariate implementation used by sci-kit uses the one-vs-all method. It can also use either L1 or L2 regularisation. The type of regularisation is the method used to calculate error, and so it defines how much a model is penalised for being wrong.
+Although the name is misleading, this model is a classifier\cite{scikit_log}. Logistic Regression forms performs a linear regression for each class: if an observation belongs to the class the output becomes 1, otherwise the output is 0. When a new object is to be classified, the linear expression is evaluated for each class and the result which is the largest is the class which is chosen\cite{witten2011data}. This method is known as the one-vs-all method. It can also use either L1 or L2 regularisation. The type of regularisation is the method used to calculate error, and so it defines how much a model is penalised for being wrong. In the following equations $x$ is a vector of the input space, for example the difference between an observed point and a predicted point.
 \subparagraph*{L1}
 \begin{displaymath}
 \left \|x  \right \|_{1} = \sum_{i}^{ } \left |x_{i}\right |
@@ -35,26 +61,9 @@ Although the name is misleading, this model is a classifier. It is originally a 
 \left \|x  \right \|_{2} = \sqrt{\sum_{i} \left |x^{2}_{i}\right |}
 \end{displaymath}
 
-\subsubsection{Linear Models}
-The following models are all linear regressions: they expect the target value to be a linear combination of the input features. The differences between them occur in the constraints applied to the coefficients.
-
-\paragraph*{Linear Regression}
-This is the simplest linear model. It uses Ordinary Least Squares to estimate the coefficients of the input vector. This means it tries to minimise the residual sum of squares between the result given by the labelled data and the result predicted by the model.
-
-\paragraph*{Ridge Regression}
-This model adapts Linear Regression by adding to the minimisation value a penalty depending on the size of the coefficients. Scikit allows control of this penalty through the $\alpha$ parameter.
-
-\paragraph*{LASSO}
-This model applies a similar penalty as Ridge Regression except use the L1 norm instead. Scikit allows control of this penalty through the $\alpha$ parameter.
-
-\paragraph*{Elastic Net}
-Elastic Net combines the penalties of Ridge Regression and LASSO to provide a tradeoff between the two functionalities. This tradeoff can be controlled through the l1\_ratio parameter.
-
-\paragraph*{Cross-validation}
-Scikit also provides versions of these models which automatically apply cross-valdiation to determine the best values for their resepctive parameters.
 
 \subsubsection{Support Vector Machines}
-At the simplest level a Support Vector Machine (SVM) takes some input and assigns it to a binary class. At first this seems as linear as the previous models, but performing the {\it kernel trick} allows the SVM to deal with non-linear data. The choice of kernel can significantly affect the performance of the model. Two SVM implementations have been considered for this problem.
+At the simplest level a Support Vector Machine (SVM) takes some input and assigns it to a binary class. At first this seems as linear as the previous models, but performing the {\it kernel trick} (see section \ref{kernel_trick} allows the SVM to deal with non-linear data. The choice of kernel can significantly affect the performance of the model. Two SVM implementations have been considered for this problem.
 
 \paragraph*{Support Vector Classifier}
 Scikit provides more than one Support Vector Classifier but SVC has been chosen due to its support of non-linear kernels. SVC uses the one-against-one approach for multiclass problems.
@@ -63,7 +72,7 @@ Scikit provides more than one Support Vector Classifier but SVC has been chosen 
 SVR is scitkit's implementation of Support Vector Regression. It also supports non-linear kernels.
 
 \subsubsection{Artificial Neural Network}
-This model was chosen because it can model very complex relationships, which some of the previous models cannot. Like all models, it takes the input vector and produces an output. It does this by passing the input through a series of hidden layers. These hidden layers are created and calibrated during the training process. The library pybrain had to be used for this because scikit provides no implementation of an Artificial Neural Network.
+ANNs were chosen because they can model very complex relationships which some of the previous models cannot. Like all models, it takes the input vector and produces an output. It does this by passing the input through a series of hidden layers. These hidden layers are created and calibrated during the training process. The library pybrain\cite{pybrain2010jmlr} had to be used for this because scikit provides no implementation of an Artificial Neural Network.
 Pybrain provides a wide variety of options, too many to be considered in this one implementation. Here are some of the options pybrain provides: Back propagation trainer, choice of hidden layer, choice of number of hidden units.
 
 \section{Training and optimising}
@@ -133,7 +142,7 @@ Using the cross-validation method described previously, the 4 different linear m
 
 Figure \ref{fig:linearmodelsmovingwindow} shows that the performance of the models depends largely on the size of the moving window. For these models the lowest error rate is acheived when the window is of size 4. For this data, the error rate increases as more questions are considered which is at first unexpected: if the model knows more about the previous questions then it should be able to have a more accurate prediction. 
 
-One possible explanation is that the new data is not as relevant. Questions in Infandango are grouped - though not strictly - by the type of the questions: a question is likely to build on knowledge of the previous question. For this reason, results of questions within the same locality are likely to be useful in predicting the results of other questions in the same locality. As this locality is increased the questions become less likely to be relevant to the target question. Not only will these questions add little information, they may also obscure the relevant information from the training algorithms.
+One possible explanation is that the data from questions further back is not as relevant. Questions in Infandango are grouped - though not strictly - by the type of the questions: a question is likely to build on knowledge of the previous question. For this reason, results of questions within the same locality are likely to be useful in predicting the results of other questions in the same locality. As this locality is increased the questions become less likely to be relevant to the target question. Not only will these questions add little information, they may also obscure the relevant information from the training algorithms.
 
 Another potential reason for the increasing error rate is that as the window size increases there is less usable data, per observed datapoint, to train on. This is shown in Figure \ref{fig:movingwindowdata}. Less training data means the algorithms have less time to adjust the weights used to predict scores.
 
@@ -160,10 +169,10 @@ The lowest average is shared by Linear Regression, Ridge Regression and Elastic 
 \centering
 \begin{tabular}{l || l | l}
 Models & Moving Window & Identity based \\ \hline \hline
-Linear Regression & 43.1508290455 & 44.066091954 \\ \hline
-Ridge Regression & 43.1508290455 & 44.0876436782 \\ \hline
-LASSO & 43.1844660458 & 43.5512452107 \\ \hline
-Elastic Net & 43.1508290455 & 44.1091954023 \\ \hline
+Linear Regression & 43.15 & 44.07 \\ \hline
+Ridge Regression & 43.15 & 44.09 \\ \hline
+LASSO & 43.18 & 43.55 \\ \hline
+Elastic Net & 43.15 & 44.11 \\ \hline
 \end{tabular}
 \caption{Average error rate for the linear models on two different data representations}
 \label{table:linearmodelsaverages}
@@ -180,10 +189,11 @@ A Support Vector Machine is an algorithm that attempts to find a maximum margin 
 \end{figure}
 
 \subsubsection{Kernel Functions}
-The simplest, linear Support Vector Machines attempt to find a maximum margin hyperplane using a method which requires calculating the dot product between vectors. In the linear case, the standard dot product is enough to allow the data to be separated. However, if the data is more complex it may not be the approriate function to use. Changing this dot product to be some other function (which must take two vectors and return a scalar value) is what is known as the "kernel trick". The candidate functions are known as kernel functions, and allow for the SVMs to be applied to non-linear data. 
+\label{kernel_trick}
+The simplest, linear Support Vector Machines attempt to find a maximum margin hyperplane using a method which requires calculating the dot product between vectors. In the linear case, the standard dot product is enough to allow the data to be separated. However, if the data is more complex it may not be the approriate function to use. Changing this dot product to be some other function (which must take two vectors and return a scalar value) is what is known as the ``kernel trick''. The candidate functions are known as kernel functions, and allow for the SVMs to be applied to non-linear data. 
 
 \subsubsection{Optimisation}
-Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, "degree", allows the specification of the degree of the kernel. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}. 
+Scikit provides 4 preset kernel functions: linear, polynomial, rbf (radial basis function) and sigmoid. In the case of polynomial and sigmoid kernels, an additional parameter, ``degree'', allows the specification of the degree of the kernel. The degree of a polynomial is the highest degree of its terms. In the case of a kernel function a higher degree means it can model more complex data. An appropriate way of finding good values for this parameter is to start at 1, and increase until the estimated error ceases to improve \cite{witten2011data}. 
 
 \begin{figure}[h!]
 \centering
@@ -230,14 +240,14 @@ The moving window approach has three similarly high performing models: SVC Linea
 \centering
 \begin{tabular}{l || l }
 Models & Average Error \\ \hline \hline
-SVC Linear & 20.3041791411 \\ \hline
-SVC Poly & 20.3313952482 \\ \hline
-SVC RBF & 20.5499438422 \\ \hline
-SVC Sigmoid & 45.4603396387 \\ \hline
-SVR Sigmoid & 45.9489389873 \\ \hline
-SVR RBF & 52.2508272032 \\ \hline
-SVR Poly & 56.6047985482 \\ \hline
-SVR Linear & 84.1041319495 \\ \hline
+SVC Linear & 20.30 \\ \hline
+SVC Poly & 20.33 \\ \hline
+SVC RBF & 20.55 \\ \hline
+SVC Sigmoid & 45.46 \\ \hline
+SVR Sigmoid & 45.95 \\ \hline
+SVR RBF & 52.25 \\ \hline
+SVR Poly & 56.60 \\ \hline
+SVR Linear & 84.10 \\ \hline
 
 \end{tabular}
 \caption{Average error rate for SVMs using the moving window approach}
@@ -256,14 +266,14 @@ SVR Linear & 84.1041319495 \\ \hline
 \centering
 \begin{tabular}{l || l }
 Models & Average Error \\ \hline \hline
-SVC Linear & 20.5459770115 \\ \hline
-SVC Poly & 17.8424329502 \\ \hline
-SVC RBF & 22.3659003831 \\ \hline
-SVR Poly & 35.5555555556 \\ \hline
-SVC Sigmoid & 40.6082375479 \\ \hline
-SVR Linear & 46.1206896552 \\ \hline
-SVR Sigmoid & 49.8970306513 \\ \hline
-SVR RBF & 53.43151341 \\ \hline
+SVC Linear & 20.55 \\ \hline
+SVC Poly & 17.84 \\ \hline
+SVC RBF & 22.37 \\ \hline
+SVR Poly & 35.56 \\ \hline
+SVC Sigmoid & 40.61 \\ \hline
+SVR Linear & 46.12 \\ \hline
+SVR Sigmoid & 49.90 \\ \hline
+SVR RBF & 53.43 \\ \hline
 
 \end{tabular}
 \caption{Average error rate for SVMs using the moving identity based approach}
@@ -288,9 +298,6 @@ Since Pybrain is a library which focuses specifically on ANNs it has even more c
 \subsubsection{Optimisation}
 Pybrain provides many types of hidden layer, including GaussianLayer, LinearLayer, SigmoidLayer and TanhLayer. Due to technical issues which will be discussed in Chatper \ref{implementation} the layers chosen were SigmoidLayer and TanhLayer.
 
-\subsubsection{Results}
-Figure \ref{fig:nnall200} shows how different parameters effect the error of the model. Both models perform similarly except the TanhLayer has a large drop in error rate with 130 hidden units.
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{images/nnall200.png}
@@ -298,14 +305,37 @@ Figure \ref{fig:nnall200} shows how different parameters effect the error of the
 \label{fig:nnall200}
 \end{figure}
 
+Figure \ref{fig:nnall200} shows how different parameters effect the error of the model. The degree parameter for each hidden layer type will be decided by choosing the degree at which each model achieves the lowest error rate. TanhLayer: 130, SigmoidLayer: 180.
+
+\subsubsection{Results}
+Using the parameters determined in the optimisation section, the models are trained and tested on each data representation.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/nnmovingwindow.png}
+\caption{The performance of two ANNs with different hidden layer types on the moving window data representation.}
+\label{fig:nnmovingwindow}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{images/nnidentified.png}
+\caption{The performance of two ANNs with different hidden layer types on the identity based data representation.}
+\label{fig:nnidentified}
+\end{figure}
+
+Figure \ref{nnmovingwindow}	shows little difference between the models, but on average TanhLayer performs slightly better. Both models are also quite erratic on this data representation, which differs from previous models which are generally quite consitent.
+
+Figure \ref{nnidentified} shows more difference between the models, with SigmoidLayer generally outperforming TanhLayer, with a few error rates which are very low.
+
 \subsubsection{Conclusion}
-There is little to choose between both models, as both have the same general trend and neither performs consistently better than the other. Although it is possibly an anomaly, the model chosen is Artificial Neural Network with Sigmoid squashing function as the hidden layer type with 130 hidden units.
+Due to the different models being best for different data representations, both models will be used for the respective representations when choosing the final model.
 
 \subsection{Final Model Selection}
 The final task is to choose the model that is going to be used in the system. To do this, each of the models are trained and tested on both data representations. Each model uses the parameters determined through optimisation.
 
 \subsubsection{Baseline}
-To see if the machine learning actually learns anything that a simple estimate could not have achieved, a baseline is used. The baseline used is simple and intuitive: take the average of the available features. By measuring the accuracy of the models against this baseline we can see if performing machine learning is worthwhile.
+To see if the machine learning actually learns anything that a simple estimate could not have achieved, a baseline is used. The baseline used is simple and intuitive: take the average of the available features. So for the moving window approach, if there are 5 exercises in the window making the feature vector: (60, 70, 80, 90, 100) then the prediction would be 80. By measuring the accuracy of the models against this baseline we can see if performing machine learning is worthwhile.
 
 \subsubsection{Results}
 The models from the previous sections are trained and tested alongside the baseline for both data representations.
@@ -329,4 +359,6 @@ Figure \ref{fig:finalmovingwindow} shows the error of the models on the moving w
 Figure \ref{fig:finalidentified} shows the error of the models on the identity based approach. All classifiers show a much less consistent performance on this data representation though the general trend remains the same as in the previous approach. 
 
 \subsubsection{Conclusion}
-Through a process of optimisations the best models were chosen for each machine learning algorithm. These models then had their performance measured against a baseline, which proved that only the support vector machien performed better than simply taking the average of the available submissions. The moving window approach maintains a consistent performance across all the questions. The identity based approach shows erratic behaviour which sometimes performs better than the moving window approach but sometimes performs worse. On average the models perform quite similarly and due to the implementation advantages of the moving window approach (Chapter \ref{design}) the final model is a Support Vector Classifier using a polynomial kernel of degree 1 on the moving window approach.
+Through a process of optimisations the best models were chosen for each machine learning algorithm. These models then had their performance measured against a baseline, which demonstrated that only the support vector machine performed better than simply taking the average of the available submissions. The moving window approach maintains a consistent performance across all the questions. The identity based approach shows erratic behaviour which sometimes performs better than the moving window approach but sometimes performs worse. On average the models perform quite similarly and due to the implementation advantages of the moving window approach (Chapter \ref{design}) the final model is a Support Vector Classifier using a polynomial kernel of degree 1 on the moving window approach.
+
+The optimal model has an average error rate of around 20\%. It is hard to say if this is an adequate accuracy because the ideal error would obviously be 0\%, and there is no evidence to say at what error rate the feedback starts becoming less effective. However, it seems there is at least room for improvement, as the identity based approach did sometimes achieve a significantly better error rate.
